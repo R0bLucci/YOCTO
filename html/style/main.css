@@ -44,3 +44,14 @@ input {
 input[type="submit"] {
 	margin: 10px;
 }
+
+div.operators {
+	width: 45%;
+	float: left;
+	margin: 3px;
+	padding: 3px;
+}
+
+div.operators ul {
+	list-style-type: none;
+}

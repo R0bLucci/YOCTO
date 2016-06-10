@@ -1,12 +1,22 @@
 var ajax = (function (){
+	// Select pie chart element 
 	var chart_from = document.getElementById("chart_from");
 	var chart_to = document.getElementById("chart_to");
 
-	var toEl = document.getElementById("to_s");
-	var fromEl = document.getElementById("from_s");
 
+	// Select bar chart element 
 	var bar_from = document.getElementById("bar_from");
 	var bar_to = document.getElementById("bar_to");
+
+
+	var operators_from = document.getElementById("operators_from");
+	var operators_to = document.getElementById("operators_to");
+
+	var bad_operators_from = document.getElementById("bad_operators_from");
+	var bad_operators_to = document.getElementById("bad_operators_to");
+
+	var toEl = document.getElementById("to_s");
+	var fromEl = document.getElementById("from_s");
 
 	toEl.addEventListener("change", sendRequest, false);
 	fromEl.addEventListener("change", sendRequest, false);
@@ -28,6 +38,35 @@ var ajax = (function (){
 		return req;
 	}
 	
+	function getAllOperators(xml, tagName){
+		var operators = [];
+		xml.getElementsByTagName(tagName)[0].childNodes.forEach( d =>operators.push(d.innerHTML));
+		return operators;
+	}	
+	
+	function showAllOperators(xml, el, badEl){
+		var operators = getAllOperators(xml, "alloperators");
+		if(operators.length > 0){
+			var text = "<h3> Operators </h3><ul>";
+			operators.forEach( function(o) {
+				var t = "<li>" + o + "</li>";	
+				text = text + t;
+			});
+			el.innerHTML = text + "</ul>";	
+		}
+		
+		var badOperators = getAllOperators(xml, "badoperators");
+
+		if(badOperators.length > 0){	
+			var text2= "<h3> Bad Operators </h3><ul>";
+			badOperators.forEach( function(o){
+				var t = "<li>" + o + "</li>";	
+				text2 = text2 + t;
+			});
+			badEl.innerHTML = text2 + "</ul>";	
+		}
+	}
+
 	function dataManipulationPie(xml){
 		var data = [];
 		push(data, extractValue(xml, "ontime"));
@@ -57,14 +96,18 @@ var ajax = (function (){
 
 		var userInput = this.value;
 
-		var targetPieEl, targetBarEl, param;
+		var targetPieEl, targetBarEl, param, operatorEl, badOperatorEl;
 		if(this.id == "to_s"){
 			targetPieEl = chart_to;
 			targetBarEl = bar_to;
+			operatorEl =  operators_to;
+			badOperatorEl =  bad_operators_to;
 			param = "to=";
 		}else{
 			targetPieEl = chart_from;
 			targetBarEl = bar_from;
+			operatorEl =  operators_from;
+			badOperatorEl =  bad_operators_from;
 			param = "from=";
 
 		}
@@ -83,8 +126,10 @@ var ajax = (function (){
 			if (this.status == 200)
 			{
 			    if (this.responseXML != null){ 
-				var dataPie = dataManipulationPie(this.responseXML);
-				var dataBar = dataManipulationBar(this.responseXML);
+				var doc = this.responseXML;
+				var dataPie = dataManipulationPie(doc);
+				var dataBar = dataManipulationBar(doc);
+				showAllOperators(doc, operatorEl, badOperatorEl);
 				ddd.graphPie(dataPie, targetPieEl.id); 
 				ddd.graphBar(dataBar, targetBarEl.id); 
 			    }else{

@@ -27,6 +27,14 @@
 		</div>
 		<div id="bar_from">
 		</div>
+		<div>
+			<div class="operators" id="operators_from"> 
+				
+			</div>
+			<div class="operators" id="bad_operators_from"> 
+				
+			</div>
+		</div>
 	</div>
 
 	<div class="container">
@@ -41,6 +49,14 @@
 		<div id="chart_to">
 		</div>
 		<div id="bar_to">
+		</div>
+		<div>
+			<div class="operators" id="operators_to"> 
+				
+			</div>
+			<div class="operators" id="bad_operators_to"> 
+
+			</div>
 		</div>
 	</div>
 </div>

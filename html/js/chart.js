@@ -13,8 +13,8 @@ var ddd = (function factory() {
 
 		data = data || [0,0,0,0,0]
 
-		var width = 600;
-		var height = 600;
+		var width = 500;
+		var height = 500;
 		var r = 50;
 		
 		var color = d3.scale.ordinal()
@@ -60,7 +60,7 @@ var ddd = (function factory() {
 
 		var width = 500;
 
-		var height = 200;
+		var height = 100;
 
 		var widthScale = d3.scale.linear()
 				.domain([0, 400])
