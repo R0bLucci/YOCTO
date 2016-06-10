@@ -5,6 +5,9 @@ var ajax = (function (){
 	var toEl = document.getElementById("to_s");
 	var fromEl = document.getElementById("from_s");
 
+	var bar_from = document.getElementById("bar_from");
+	var bar_to = document.getElementById("bar_to");
+
 	toEl.addEventListener("change", sendRequest, false);
 	fromEl.addEventListener("change", sendRequest, false);
 
@@ -24,26 +27,50 @@ var ajax = (function (){
 		}
 		return req;
 	}
+	
+	function dataManipulationPie(xml){
+		var data = [];
+		push(data, extractValue(xml, "ontime"));
+		push(data, extractValue(xml, "cancelled"));
+		push(data, extractValue(xml, "noreport"));
+		push(data, extractValue(xml, "unknown"));
+		push(data, extractValue(xml, "delay"));
+		return data;
+	}
 
+	function dataManipulationBar(xml){
+		var data = [];
+		push(data, extractValue(xml, "totalminsdelay"));
+		return data;
+	}
+
+	function extractValue(xml, tagName){
+		return xml.getElementsByTagName(tagName)[0].childNodes[0].nodeValue;
+	}
+
+	function push(arr, value){
+		arr.push(value);
+	}
 
 	function sendRequest(){
 
 		var userInput = this.value;
 
-		var targetEl, param;
+		var targetPieEl, targetBarEl, param;
 		if(this.id == "to_s"){
-			targetEl = chart_to;
+			targetPieEl = chart_to;
+			targetBarEl = bar_to;
 			param = "to=";
 		}else{
-			targetEl = chart_from;
+			targetPieEl = chart_from;
+			targetBarEl = bar_from;
 			param = "from=";
 
 		}
 		param = param + userInput;
 
-
+		console.log(param);
 		var request = ajaxRequest();
-		console.log(request);
 		request.open("POST", "http://127.0.0.1:8888/statistic.php", true);
 		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		request.send(param);
@@ -54,13 +81,13 @@ var ajax = (function (){
 		    {
 			if (this.status == 200)
 			{
-			    if (this.responseText != null)
-			    {
-			    	console.log(this.responseText);
-				var el = ddd.graph(null, targetEl.id); 
-			    }
-			    else
-			    {
+			    if (this.responseXML != null){ 
+				var dataPie = dataManipulationPie(this.responseXML);
+				var dataBar = dataManipulationBar(this.responseXML);
+				ddd.graphPie(dataPie, targetPieEl.id); 
+				ddd.graphBar(dataBar, targetBarEl.id); 
+			    }else{
+
 				alert("Ajax error: No data received");
 			    }
 			}
