@@ -35,6 +35,7 @@ var ajax = (function (){
 		push(data, extractValue(xml, "noreport"));
 		push(data, extractValue(xml, "unknown"));
 		push(data, extractValue(xml, "delay"));
+		console.log(xml);
 		return data;
 	}
 

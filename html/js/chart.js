@@ -60,20 +60,26 @@ var ddd = (function factory() {
 
 		var width = 500;
 
-		var height = 500;
+		var height = 200;
 
 		var widthScale = d3.scale.linear()
-				.domain([0, data[0]])
+				.domain([0, 400])
 				.range([0, width]);	
 
 		var color = d3.scale.linear()
-				.domain([0, data[0]])
-				.range(["green", "red"]);
+				.domain([0, 400])
+				.range(["orange", "red"]);
+		
+		var axis = d3.svg.axis()
+				.ticks(12)
+				.scale(widthScale);
 
 		var canvas = d3.select("#" + elId)
 				.append("svg")
 				.attr("width", width)
-				.attr("height", height);
+				.attr("height", height)
+				.append("g")
+				.attr("transform", "translate(10, 0)");
 		
 		var bars = canvas.selectAll("rect")
 				.data(data)
@@ -83,6 +89,14 @@ var ddd = (function factory() {
 					.attr("fill", function (d) {return color(d); })
 					.attr("height", 50)
 					.attr("y", function(d, i) { return i *100; });
+		canvas.append("g")
+			.attr("transform", "translate(0, 60)")
+			.call(axis);
+
+		canvas.append("g")	
+			.attr("transform", "translate(0, 30)")
+			.append("text")
+				.text("Total minutes delay");
 	}
 
 	var API = {
