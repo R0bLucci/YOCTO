@@ -136,7 +136,7 @@ var ajax = (function (){
 				alert("Ajax error: No data received");
 			    }
 			}else{
-			    alter("Ajax error: " + this.statusText);
+			    alert("Ajax error: " + this.statusText);
 			}
 		    }
 		};
