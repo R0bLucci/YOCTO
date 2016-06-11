@@ -1,8 +1,10 @@
+<?php if(isset($_POST["submit"])) header("Location: go.php") ?>
+
 <?php include_once "../to_from.php"; ?>
 
 <?php include_once "../template/header.php"; ?>
 
-<form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
+<form method="POST" action="<?php echo "http://". $_SERVER["HTTP_HOST"]. "/go.php";?>">
 	<div class="selection">
 		<label for="from_s"> From: </label>
 			<?php Station::stations("from"); ?>
@@ -61,4 +63,6 @@
 	</div>
 </div>
 
+<script src="../js/ajax.js" charset="utf-8"></script>
+<script src="../js/chart.js" charset="utf-8"></script>
 <?php include_once "../template/footer.php"; ?>

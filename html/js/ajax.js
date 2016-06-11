@@ -45,6 +45,9 @@ var ajax = (function (){
 	}	
 	
 	function showAllOperators(xml, el, badEl){
+		el.innerHTML = "";
+		badEl.innerHTML = "";
+
 		var operators = getAllOperators(xml, "alloperators");
 		if(operators.length > 0){
 			var text = "<h3> Operators </h3><ul>";
@@ -74,7 +77,6 @@ var ajax = (function (){
 		push(data, extractValue(xml, "noreport"));
 		push(data, extractValue(xml, "unknown"));
 		push(data, extractValue(xml, "delay"));
-		console.log(xml);
 		return data;
 	}
 
@@ -113,7 +115,6 @@ var ajax = (function (){
 		}
 		param = param + userInput;
 
-		console.log(param);
 		var request = ajaxRequest();
 		request.open("POST", "http://127.0.0.1:8888/statistic.php", true);
 		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -121,10 +122,8 @@ var ajax = (function (){
 
 		request.onreadystatechange = function ()
 		{
-		    if (this.readyState == 4)
-		    {
-			if (this.status == 200)
-			{
+		    if (this.readyState == 4){
+			if (this.status == 200){
 			    if (this.responseXML != null){ 
 				var doc = this.responseXML;
 				var dataPie = dataManipulationPie(doc);
@@ -136,9 +135,7 @@ var ajax = (function (){
 
 				alert("Ajax error: No data received");
 			    }
-			}
-			else
-			{
+			}else{
 			    alter("Ajax error: " + this.statusText);
 			}
 		    }
